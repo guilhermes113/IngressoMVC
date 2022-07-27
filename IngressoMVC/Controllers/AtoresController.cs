@@ -42,7 +42,7 @@ namespace IngressoMVC.Controllers
             FotoURLFilmes = resultado.AtoresFilmes.Select(af => af.Filme.ImageURL).ToList(),
             NomeFilmes = resultado.AtoresFilmes.Select(af => af.Filme.Titulo).ToList()
             };
-            return View();
+            return View(resultado);
             #endregion
             #region Método 2
             //var result = _context.Atores.Where(ator => ator.Id == id).Select(at => new GetAtoresDTO()
@@ -95,7 +95,7 @@ namespace IngressoMVC.Controllers
             var result = _context.Atores.FirstOrDefault(p => p.Id == id);
 
             if (result == null)
-                return View();
+                return View("NotFound");
 
             return View(result);
         }

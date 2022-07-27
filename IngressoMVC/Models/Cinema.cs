@@ -11,6 +11,8 @@ namespace IngressoMVC.Models
             Nome = nome;
             Descricao = descricao;
             LogoURL = logoURL;
+            DataCadastro = DateTime.Now;
+            DataAlteracao = DataCadastro;
         }
 
         public int Id { get; private set; }

@@ -68,11 +68,34 @@ namespace IngressoMVC.Controllers
                
         public IActionResult Deletar(int id)
         {
-            return View();
+            var result = _context.Filmes.FirstOrDefault(x => x.Id == id);
+            if (result == null) return View("NotFound");
+            return View(result);
+        }
+        [HttpPost, ActionName("Deletar")]
+        public IActionResult ConfirmaDeletar(int id) 
+        {
+            var result = _context.Filmes.FirstOrDefault(x => x.Id == id);
+            if (result == null) return View("NotFound");
+            _context.Remove(result);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
         public IActionResult Atualizar(int id)
         {
-            return View();
+            var result = _context.Filmes.FirstOrDefault(x => x.Id == id);
+            if (result == null) return View("NotFound");
+            return View(result);
+        }
+        [HttpPost]
+        public IActionResult Atualizar(int id, PostFilmeDTO filmeDTO)
+        {
+            var result = _context.Filmes.FirstOrDefault(x => x.Id == id);
+            if (!ModelState.IsValid) return View(result);
+            result.AlteraDados(filmeDTO.Titulo,filmeDTO.Descricao,filmeDTO.Preco,filmeDTO.ImageURL) ;
+            _context.Update(result);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -13,18 +13,22 @@ namespace IngressoMVC.Models
             Preco = preco;
             ImageURL = imageURL;
             ProdutorId = produtor;
+            DataCadastro = DateTime.Now;
+            DataAlteracao = DataCadastro;
         }
 
         public Filme(string titulo, string descricao, decimal preco, string imageURL, int cinemaId, int produtorId)
         {
+            //Filme (titulo, descricao, preco, imageURL, produtorId);
             Titulo = titulo;
             Descricao = descricao;
             Preco = preco;
             ImageURL = imageURL;
             ProdutorId = produtorId;
             CinemaId = cinemaId;
+            DataCadastro = DateTime.Now;
+            DataAlteracao = DataCadastro;
         }
-
         public int Id { get; private set; }
         public DateTime DataCadastro { get; private set; }
         public DateTime DataAlteracao { get; private set; }
@@ -45,14 +49,17 @@ namespace IngressoMVC.Models
         #endregion
 
 
-        public void AlteraPreco(decimal novoPreco)
+        public void AlteraDados(string titulo,string descricao, decimal novoPreco, string imageURL)
         {
-            if(novoPreco < 0)
+            if (titulo.Length < 3 || novoPreco < 0)
             {
                 return;
             }
-
+            Titulo = titulo;
+            Descricao = descricao;
             Preco = novoPreco;
+            ImageURL = imageURL;
+            DataAlteracao = DateTime.Now;
         }
     }
 }
