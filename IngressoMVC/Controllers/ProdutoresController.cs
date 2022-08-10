@@ -32,7 +32,7 @@ namespace IngressoMVC.Controllers
             //FotoPerfilURL = at.FotoPerfilURL,
             //Nome = at.Nome,
             //NomeFilmes = at.AtoresFilmes.Select(fm => fm.Filme.Titulo).ToList(),
-            //FotoURLFilmes = at.AtoresFilmes.Select(fm => fm.Filme.ImageURL).ToList()
+            //FotoURLFilmes = at.AtoresFilmes.Select(fm => fm.Filme.ImagemURL).ToList()
             //}).FirstOrDefault();
             var result = _context.Produtores.Where(prod => prod.Id == id)
                 .Select(prod => new GetProdutoresDTO()
@@ -41,7 +41,7 @@ namespace IngressoMVC.Controllers
                     Bio = prod.Bio,
                     FotoPerfilURL = prod.FotoPerfilURL,
                     NomeFilmes = prod.Filmes.Select(filme => filme.Titulo).ToList(),
-                    FotoURLFilmes = prod.Filmes.Select(filme => filme.ImageURL).ToList()
+                    FotoURLFilmes = prod.Filmes.Select(filme => filme.ImagemURL).ToList()
                 }).FirstOrDefault();
 
             return View(result);

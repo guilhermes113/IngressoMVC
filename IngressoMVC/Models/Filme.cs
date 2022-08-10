@@ -6,26 +6,19 @@ namespace IngressoMVC.Models
 {
     public class Filme : IEntidade
     {
-        public Filme(string titulo, string descricao, decimal preco, string imageURL,int produtor)
+        protected Filme() { }
+        public Filme(string titulo, string descricao, decimal preco, string imagemURL, int cinemaId, int produtorId, DateTime lancamento, DateTime encerramento)
         {
             Titulo = titulo;
             Descricao = descricao;
             Preco = preco;
-            ImageURL = imageURL;
-            ProdutorId = produtor;
-            DataCadastro = DateTime.Now;
-            DataAlteracao = DataCadastro;
-        }
-
-        public Filme(string titulo, string descricao, decimal preco, string imageURL, int cinemaId, int produtorId)
-        {
-            //Filme (titulo, descricao, preco, imageURL, produtorId);
-            Titulo = titulo;
-            Descricao = descricao;
-            Preco = preco;
-            ImageURL = imageURL;
-            ProdutorId = produtorId;
+            ImagemURL = imagemURL;
+            DataLancamento = lancamento;
+            DataEncerramento = encerramento;
             CinemaId = cinemaId;
+            ProdutorId = produtorId;
+            
+
             DataCadastro = DateTime.Now;
             DataAlteracao = DataCadastro;
         }
@@ -35,7 +28,9 @@ namespace IngressoMVC.Models
         public string Titulo { get; private set; }
         public string Descricao { get; private set; }
         public decimal Preco { get; private set; }
-        public string ImageURL { get; private set; }
+        public string ImagemURL { get; private set; }
+        public DateTime DataLancamento { get; private set; }
+        public DateTime DataEncerramento { get; private set; }
 
         #region relacionamentos
         public int CinemaId { get; set; }
@@ -49,7 +44,7 @@ namespace IngressoMVC.Models
         #endregion
 
 
-        public void AlteraDados(string titulo,string descricao, decimal novoPreco, string imageURL)
+        public void AlteraDados(string titulo,string descricao, decimal novoPreco, string imagemURL,DateTime lancamento,DateTime encerramento)
         {
             if (titulo.Length < 3 || novoPreco < 0)
             {
@@ -58,8 +53,10 @@ namespace IngressoMVC.Models
             Titulo = titulo;
             Descricao = descricao;
             Preco = novoPreco;
-            ImageURL = imageURL;
+            ImagemURL = imagemURL;
             DataAlteracao = DateTime.Now;
+            DataLancamento = lancamento;
+            DataEncerramento = encerramento;
         }
     }
 }

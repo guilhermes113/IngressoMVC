@@ -125,10 +125,16 @@ namespace IngressoMVC.Migrations
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DataEncerramento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataLancamento")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Descricao")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageURL")
+                    b.Property<string>("ImagemURL")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Preco")
@@ -218,7 +224,7 @@ namespace IngressoMVC.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("IngressoMVC.Models.Produtor", "Produtor")
+                    b.HasOne("IngressoMVC.Models.Produtor", "produtorId")
                         .WithMany("Filmes")
                         .HasForeignKey("ProdutorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -226,7 +232,7 @@ namespace IngressoMVC.Migrations
 
                     b.Navigation("Cinema");
 
-                    b.Navigation("Produtor");
+                    b.Navigation("produtorId");
                 });
 
             modelBuilder.Entity("IngressoMVC.Models.FilmeCategoria", b =>

@@ -11,10 +11,12 @@ namespace IngressoMVC.Models.ViewModels.Request
             public string Titulo { get; set; }
             public string Descricao { get; set; }
             public decimal Preco { get; set; }
-            public string ImageURL { get; set; }
+            public string ImagemURL { get; set; }
+            public DateTime DataLancamento { get; set; }
+            public DateTime DataEncerramento { get; set; }
 
             #region relacionamentos
-            public string NomeCinema { get; set; }
+            public int CinemaId { get; set; }
 
             public int ProdutorId { get; set; }
 

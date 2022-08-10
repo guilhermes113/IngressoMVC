@@ -39,10 +39,11 @@ namespace IngressoMVC.Controllers
             Nome = resultado.Nome,
             Bio = resultado.Bio,
             FotoPerfilURL = resultado.FotoPerfilURL,
-            FotoURLFilmes = resultado.AtoresFilmes.Select(af => af.Filme.ImageURL).ToList(),
+            FotoURLFilmes = resultado.AtoresFilmes.Select(af => af.Filme.ImagemURL).ToList(),
             NomeFilmes = resultado.AtoresFilmes.Select(af => af.Filme.Titulo).ToList()
             };
-            return View(resultado);
+            return View(resultado
+                );
             #endregion
             #region Método 2
             //var result = _context.Atores.Where(ator => ator.Id == id).Select(at => new GetAtoresDTO()
@@ -51,7 +52,7 @@ namespace IngressoMVC.Controllers
             //FotoPerfilURL = at.FotoPerfilURL,
             //Nome = at.Nome,
             //NomeFilmes = at.AtoresFilmes.Select(fm => fm.Filme.Titulo).ToList(),
-            //FotoURLFilmes = at.AtoresFilmes.Select(fm => fm.Filme.ImageURL).ToList()
+            //FotoURLFilmes = at.AtoresFilmes.Select(fm => fm.Filme.ImagemURL).ToList()
             //}).FirstOrDefault();
 
             #endregion

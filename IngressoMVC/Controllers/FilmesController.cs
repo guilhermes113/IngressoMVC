@@ -2,6 +2,7 @@
 using IngressoMVC.Models;
 using IngressoMVC.Models.ViewModels.Request;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,19 +28,40 @@ namespace IngressoMVC.Controllers
         }
         public IActionResult Criar()
         {
+            var dadosDropdown = DadosDropDow();
+            ViewBag.Atores = new SelectList(dadosDropdown.Atores, "Id", "Nome");
+            ViewBag.Categorias = new SelectList(dadosDropdown.Categorias, "Id", "Nome");
+            ViewBag.Cinemas = new SelectList(dadosDropdown.Cinemas, "Id", "Nome");
+            ViewBag.Produtores = new SelectList(dadosDropdown.Produtores, "Id", "Nome");
+
+
+
             return View();
         }
-        
+        public PostFilmeDropDownDTO DadosDropDow()
+        {
+            var resp = new PostFilmeDropDownDTO()
+            {
+                Atores = _context.Atores.OrderBy(x => x.Nome).ToList(),
+                Cinemas = _context.Cinemas.OrderBy(x => x.Nome).ToList(),
+                Produtores = _context.Produtores.OrderBy(x => x.Nome).ToList(),
+                Categorias = _context.Categorias.OrderBy(x => x.Nome).ToList()
+            };
+            return resp;
+        }
         [HttpPost]IActionResult CriarFilmecomCAtegoriasEAtores(PostFilmeDTO filmeDto)
         {
             Filme filme = new Filme
-            (
-                filmeDto.Titulo,
-                filmeDto.Descricao,
-                filmeDto.Preco,
-                filmeDto.ImageURL,
-                _context.Produtores.FirstOrDefault(x => x.Id == filmeDto.ProdutorId).Id
-            );
+                (
+                    filmeDto.Titulo,
+                    filmeDto.Descricao,
+                    filmeDto.Preco,
+                    filmeDto.ImagemURL,
+                    filmeDto.ProdutorId,
+                    filmeDto.CinemaId,
+                    filmeDto.DataLancamento,
+                    filmeDto.DataEncerramento
+                );
             _context.Add(filme);
             _context.SaveChanges();
 
@@ -92,10 +114,17 @@ namespace IngressoMVC.Controllers
         {
             var result = _context.Filmes.FirstOrDefault(x => x.Id == id);
             if (!ModelState.IsValid) return View(result);
-            result.AlteraDados(filmeDTO.Titulo,filmeDTO.Descricao,filmeDTO.Preco,filmeDTO.ImageURL) ;
+            result.AlteraDados(filmeDTO.Titulo,filmeDTO.Descricao,filmeDTO.Preco,filmeDTO.ImagemURL,filmeDTO.DataLancamento,filmeDTO.DataEncerramento) ;
             _context.Update(result);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
+        }
+        public IActionResult Teste()
+        {
+            ViewData["TesteData"] = "Olá,View Data";
+            ViewBag.OutroTeste = "Olá,View Data";
+
+            return View();
         }
     }
 }
