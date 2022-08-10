@@ -7,17 +7,17 @@ namespace IngressoMVC.Models
     public class Filme : IEntidade
     {
         protected Filme() { }
-        public Filme(string titulo, string descricao, decimal preco, string imagemURL, int cinemaId, int produtorId, DateTime lancamento, DateTime encerramento)
+        public Filme(string titulo, string descricao, decimal preco, string imageURL, int produtorId,
+                     int cinemaId, DateTime lancamento, DateTime encerramento)
         {
             Titulo = titulo;
             Descricao = descricao;
             Preco = preco;
-            ImagemURL = imagemURL;
+            ImagemURL = imageURL;
+            ProdutorId = produtorId;
+            CinemaId = cinemaId;
             DataLancamento = lancamento;
             DataEncerramento = encerramento;
-            CinemaId = cinemaId;
-            ProdutorId = produtorId;
-            
 
             DataCadastro = DateTime.Now;
             DataAlteracao = DataCadastro;
