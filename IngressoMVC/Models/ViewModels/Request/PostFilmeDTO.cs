@@ -21,7 +21,7 @@ namespace IngressoMVC.Models.ViewModels.Request
             public int ProdutorId { get; set; }
 
             public List<int> AtoresId { get; set; }
-            public List<string> Categorias { get; set; }
+            public List<int> CategoriasId { get; set; }
             #endregion
         
     }

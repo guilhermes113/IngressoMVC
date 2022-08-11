@@ -1,16 +1,14 @@
 ﻿@model IEnumerable<Filme>
 
 @{
-    ViewData["Title"] = "Lista de Filmes";
+    ViewData["Title"] = "Lista de Filme";
 }
-<h1>
-    Filmes -
-    <a class="btn btn-dark" asp-action="Criar">
-        Cadastrar
-    </a>
-</h1>
+
+@Html.Partial("_NovoItem", "Filmes")
 
 <div class="row">
+
+
 
     @foreach (var item in Model)
     {

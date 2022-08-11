@@ -37,7 +37,7 @@ namespace IngressoMVC.Models
         public Cinema Cinema { get; set; }
 
         public int ProdutorId { get; set; }
-        public Produtor produtorId { get; set; }
+        public Produtor produtor { get; set; }
 
         public List<AtorFilme> AtoresFilmes { get; set; }
         public List<FilmeCategoria> FilmesCategorias { get; set; }

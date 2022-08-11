@@ -32,7 +32,7 @@
                         <p class="card-text">
                             <b>Producer: </b>
                             <a asp-controller="Produtores" asp-action="Detalhes" asp-route-id="@Model.ProdutorId">
-                                @Model.produtorId.Nome                           </a>
+                                @Model.produtor.Nome                           </a>
                         </p>
                         <p class="card-text"><b>Estréia: </b>@Model.DataLancamento.ToString("dd MMM yy")</p>
                         <p class="card-text"><b>Até: </b>@Model.DataEncerramento.ToString("dd MMM yy")</p>

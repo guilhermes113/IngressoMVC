@@ -1,14 +1,12 @@
 ﻿@model IEnumerable<Cinema>
-@* OK *@
+@Html.Partial("_NovoItem", "Cinema")
 <div class="row">
     <div class="col-md-10 offset-md-1">
-        <h1>
-             Filmes
-            
-          <a class="btn btn-dark" asp-action="Criar">
-          Cadastrar
-          </a>
-        </h1>
+
+        <h2 class="offset-5">
+            Cinemas
+        </h2>
+
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -46,7 +44,8 @@
         </td>
         <td class="align-middle">@cinema.Nome</td>
         <td class="align-middle">@cinema.Descricao</td>
-    </tr>}
+    </tr>
+}
             </tbody>
         </table>
 

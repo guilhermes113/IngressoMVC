@@ -3,6 +3,7 @@ using IngressoMVC.Models;
 using IngressoMVC.Models.ViewModels.Request;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,21 +25,23 @@ namespace IngressoMVC.Controllers
         }
         public IActionResult Detalhes(int id)
         {
-            return View(_context.Filmes.Find(id));
+            var result = _context.Filmes
+                .Include(p => p.produtor)
+                .Include(c => c.Cinema)
+                .Include(fc => fc.FilmesCategorias).ThenInclude(c => c.Categoria)
+                .Include(af => af.AtoresFilmes).ThenInclude(a => a.Ator)
+                .FirstOrDefault(f => f.Id == id);
+
+            return View(result);
         }
         public IActionResult Criar()
         {
-            var dadosDropdown = DadosDropDow();
-            ViewBag.Atores = new SelectList(dadosDropdown.Atores, "Id", "Nome");
-            ViewBag.Categorias = new SelectList(dadosDropdown.Categorias, "Id", "Nome");
-            ViewBag.Cinemas = new SelectList(dadosDropdown.Cinemas, "Id", "Nome");
-            ViewBag.Produtores = new SelectList(dadosDropdown.Produtores, "Id", "Nome");
-
+            DadosDropDow();
 
 
             return View();
         }
-        public PostFilmeDropDownDTO DadosDropDow()
+        public void DadosDropDow()
         {
             var resp = new PostFilmeDropDownDTO()
             {
@@ -47,10 +50,20 @@ namespace IngressoMVC.Controllers
                 Produtores = _context.Produtores.OrderBy(x => x.Nome).ToList(),
                 Categorias = _context.Categorias.OrderBy(x => x.Nome).ToList()
             };
-            return resp;
+
+            ViewBag.Atores = new SelectList(resp.Atores, "Id", "Nome");
+            ViewBag.Categorias = new SelectList(resp.Categorias, "Id", "Nome");
+            ViewBag.Cinemas = new SelectList(resp.Cinemas, "Id", "Nome");
+            ViewBag.Produtores = new SelectList(resp.Produtores, "Id", "Nome");
+
         }
         [HttpPost]IActionResult CriarFilmecomCAtegoriasEAtores(PostFilmeDTO filmeDto)
         {
+            if (!ModelState.IsValid) 
+            {
+                DadosDropDow();
+                return View();
+            }
             Filme filme = new Filme
                 (
                     filmeDto.Titulo,
@@ -66,9 +79,9 @@ namespace IngressoMVC.Controllers
             _context.SaveChanges();
 
             //Incluir Relacionamentos
-            foreach (var categoria in filmeDto.Categorias)
+            foreach (var categoria in filmeDto.CategoriasId)
             {
-                int? categoriaId = _context.Categorias.Where(c => c.Nome == categoria).FirstOrDefault().Id;
+                int? categoriaId = _context.Categorias.Where(c => c.Id == categoria).FirstOrDefault().Id;
 
                 if (categoriaId != null)
                 {
@@ -105,9 +118,25 @@ namespace IngressoMVC.Controllers
         }
         public IActionResult Atualizar(int id)
         {
-            var result = _context.Filmes.FirstOrDefault(x => x.Id == id);
+            var result = _context.Filmes.Include(x => x.AtoresFilmes).ThenInclude(x => x.Ator)
+                                        .Include(x => x.FilmesCategorias).ThenInclude(x => x.Categoria)
+                                        .FirstOrDefault(x => x.Id == id);
             if (result == null) return View("NotFound");
-            return View(result);
+            var resp = new PostFilmeDTO()
+            {
+                Titulo = result.Titulo,
+                Descricao = result.Descricao,
+                Preco = result.Preco,
+                ImagemURL = result.ImagemURL,
+                DataLancamento = result.DataLancamento,
+                DataEncerramento = result.DataEncerramento,
+                CinemaId = result.CinemaId,
+                ProdutorId = result.ProdutorId,
+                AtoresId = result.AtoresFilmes.Select(x => x.AtorId).ToList(),
+                CategoriasId = result.FilmesCategorias.Select(x => x.CategoriaId).ToList()
+            };
+            DadosDropDow();
+            return View(resp);
         }
         [HttpPost]
         public IActionResult Atualizar(int id, PostFilmeDTO filmeDTO)
@@ -125,6 +154,20 @@ namespace IngressoMVC.Controllers
             ViewBag.OutroTeste = "Olá,View Data";
 
             return View();
+        }
+        public IActionResult Buscar(string filtroBusca)
+        {
+            var resultado = _context.Filmes.ToList();
+
+            if (!string.IsNullOrEmpty(filtroBusca))
+            {
+                filtroBusca = filtroBusca.ToLower();
+                var resultdaoBusca = resultado.Where(x => x.Titulo.ToLower().Contains(filtroBusca) ||
+                                                          x.Descricao.ToLower().Contains(filtroBusca)).ToList();
+                return View(nameof(Index), resultdaoBusca);
+            };
+            return View(nameof(Index), resultado);
+            
         }
     }
 }

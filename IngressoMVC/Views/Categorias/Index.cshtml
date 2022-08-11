@@ -1,13 +1,11 @@
 ﻿@model IEnumerable<Categoria>
-@* OK *@
+@Html.Partial("_NovoItem", "Categoria")
 <div class="row">
     <div class="col-md-10 offset-md-1">
-        <h1>Categorias
-        -
-        <a class="btn btn-dark" asp-action="Criar">
-            Cadastrar
-        </a>
-        </h1>
+
+        <h2 class="offset-5">
+            Categorias
+        </h2>
 
         <div class="col-12 my-2">
             <input class="form-control" type="text" name="nome" id="nome" placeholder="Buscar ator ou atriz... " />
@@ -22,30 +20,29 @@
             <tbody>
                 @foreach (var categoria in Model)
                 {
-                    
-                    <tr>
-                        <td>
-                            <div class="d-flex flex-column">
-                                <a class="btn btn-success" asp-action="Atualizar" asp-route-id="@categoria.Id">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                    Editar
-                                </a>
-                               
-                                <a class="btn btn-primary mt-1" asp-action="Detalhes" asp-route-id="@categoria.Id">
-                                    <i class="fa-solid fa-eye"></i>
-                                    Ver
-                                </a>
-                                
-                                <a class="btn btn-danger mt-1" asp-action="Deletar" asp-route-id="@categoria.Id">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                    Excluir
-                                </a>
-                            </div>
-                        </td>
-                        <td class="align-middle">
-                        <td class="align-middle">@categoria.Nome</td>
-                    </tr>
-                }
+
+    <tr>
+        <td>
+            <div class="d-flex flex-column">
+                <a class="btn btn-success" asp-action="Atualizar" asp-route-id="@categoria.Id">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    Editar
+                </a>
+
+                <a class="btn btn-primary mt-1" asp-action="Detalhes" asp-route-id="@categoria.Id">
+                    <i class="fa-solid fa-eye"></i>
+                    Ver
+                </a>
+
+                <a class="btn btn-danger mt-1" asp-action="Deletar" asp-route-id="@categoria.Id">
+                    <i class="fa-solid fa-trash-can"></i>
+                    Excluir
+                </a>
+            </div>
+        </td>
+        <td class="align-middle">
+        <td class="align-middle">@categoria.Nome</td>
+    </tr>}
             </tbody>
         </table>
 
