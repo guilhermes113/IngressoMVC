@@ -157,13 +157,20 @@ namespace IngressoMVC.Controllers
         }
         public IActionResult Buscar(string filtroBusca)
         {
-            var resultado = _context.Filmes.ToList();
+            var resultado = _context.Filmes.Include(filme => filme.AtoresFilmes)
+                                           .ThenInclude(af => af.Ator).ToList();
 
             if (!string.IsNullOrEmpty(filtroBusca))
             {
                 filtroBusca = filtroBusca.ToLower();
                 var resultdaoBusca = resultado.Where(x => x.Titulo.ToLower().Contains(filtroBusca) ||
-                                                          x.Descricao.ToLower().Contains(filtroBusca)).ToList();
+                                                          x.Descricao.ToLower().Contains(filtroBusca) ||
+                                                          x.AtoresFilmes.Select(af => af.Ator.Nome.ToLower()
+                                                                        .Contains(filtroBusca))
+                                                                        .FirstOrDefault())
+                                                                        .OrderBy(x => x.Titulo)
+                                                                        .ToList();
+                                                                                                            
                 return View(nameof(Index), resultdaoBusca);
             };
             return View(nameof(Index), resultado);

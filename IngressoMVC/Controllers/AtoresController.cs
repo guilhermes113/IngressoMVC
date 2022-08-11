@@ -116,5 +116,19 @@ namespace IngressoMVC.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        public IActionResult Buscar(string filtroBusca)
+        {
+            var resultado = _context.Atores.ToList();
+
+            if (!string.IsNullOrEmpty(filtroBusca))
+             {
+                    filtroBusca = filtroBusca.ToLower();
+                    var resultdaoBusca = resultado.Where(x => x.Nome.ToLower().Contains(filtroBusca) ||
+                                                              x.Bio.ToLower().Contains(filtroBusca)).ToList();
+                    return View(nameof(Index), resultdaoBusca);
+             };
+                return View(nameof(Index), resultado);
+        }
     }
+    
 }
